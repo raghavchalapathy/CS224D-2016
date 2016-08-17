@@ -1,0 +1,111 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+ 
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+%\renewcommand{\qedsymbol}{\filledbox}
+ 
+\title{CS224d Assignment-1 Solutions }%replace X with the appropriate number
+\author{Raghav Chalapathy\\ %replace with your name
+Deep Learning for Natural Language Processing} %if necessary, replace with your course title
+ 
+\maketitle
+ 
+\section{ SoftMax Function}
+
+In a multi-class classification problem, using  support vector machines (SVM)  produces  classification score  or confidence score for each of the class. Sometimes it is desirable  to convert  these confidence scores into probabilities which could be achieved using softmax functions.
+
+
+In this section let us understand some of the important properties of softmax function and provide some proofs for the same
+\subsection{Properties of Softmax function}
+
+\subsubsection{Property 1:}
+Prove that softmax is invariant to constant offsets in the input, that is, for any input vector
+x and any constant c,
+$softmax(x) = softmax(x + c)$
+where $(x + c)$ means adding the constant $c$ to every dimension of $x$. \\
+
+Remember that $softmax(x)_{i}= \frac{e^{x_{i}}} {\Sigma _{j=1}^Ne^{x_{j}} }$ \\ for $j = 1,...,N.$ , where $N$ represents the number of dimensions in the score set $x_{i}$.\\
+
+\textit{Solution:}
+
+In practice, when computing softmax probabilities, in order to obtain numerical stability $c = -max(x_{i})$ is choosen, where $x_{i}$ is the score set. This constant $c$ is subtracted from each of the elements in $x_{i}$.
+
+\begin{center}
+	$softmax(x) = softmax(x + c)$
+\end{center}
+
+\textit{Proof:}
+
+Given a N-dimensional vector $x$ ( $x_{j}$ is the j-th component of x, and 1 <= j <= N):\\
+
+$softmax(x+c)_{i} = \frac{e^{x_{i} + c  }} {\Sigma _{j=1}^Ne^{x_{j} + c} } =  \frac{e^{c} \bullet e^{x_{i}}} {\Sigma _{j=1}^N e^{c} \bullet e^{x_{j}} } =  \frac{e^{c} \bullet e^{x_{i}}} {e^{c} \bullet \Sigma _{j=1}^N  e^{x_{j}} } = \frac{e^{x_{i}}} {\Sigma _{j=1}^Ne^{x_{j}} } = softmax(x)_{i}  $ \\
+
+
+Since we have shown that for all components j $softmax(x+c)_{j} = softmax(x)_{j}$, then it follows that $softmax(x+c) = softmax(x)$.
+
+\subsubsection{Property 2:}  Let $x_{i}$ be  the score set  and $S(x)_{i}$ denote the Softmax function for each element in $x_{i}$ . 
+\begin{flushleft}
+	If we mulitply each element in set $x_{i}$ by $10$ then  $S(x \bullet 10)_{i}$ the probabilities get close to either \textbf{$1$ or $0$} \\
+\end{flushleft}
+\begin{flushleft}
+	If we divide  each element in set $x_{i}$ by $10$ then  $S( {x \div 10})_{i}$  the probabilities get close to the \textit{uniform distribution }\\
+\end{flushleft}
+ 
+%\begin{theorem}{x.yz} %You can use theorem, proposition, exercise, or reflection here.  Modify x.yz to be whatever number you are proving
+%Delete this text and write theorem statement here.
+%\end{theorem}
+% 
+%\begin{proof}
+%Blah, blah, blah.  Here is an example of the \texttt{align} environment:
+%%Note 1: The * tells LaTeX not to number the lines.  If you remove the *, be sure to remove it below, too.
+%%Note 2: Inside the align environment, you do not want to use $-signs.  The reason for this is that this is already a math environment. This is why we have to include \text{} around any text inside the align environment.
+%\begin{align*}
+%\sum_{i=1}^{k+1}i & = \left(\sum_{i=1}^{k}i\right) +(k+1)\\ 
+%& = \frac{k(k+1)}{2}+k+1 & (\text{by inductive hypothesis})\\
+%& = \frac{k(k+1)+2(k+1)}{2}\\
+%& = \frac{(k+1)(k+2)}{2}\\
+%& = \frac{(k+1)((k+1)+1)}{2}.
+%\end{align*}
+%\end{proof}
+% 
+%\begin{proposition}{x.yz}
+%Let $n\in \Z$.  
+%\end{proposition}
+% 
+%\begin{proof}[Disproof]%Whatever you put in the square brackets will be the label for the block of text to follow in the proof environment.
+%Blah, blah, blah.  I'm so smart.
+%\end{proof}
+ 
+% --------------------------------------------------------------
+%     You don't have to mess with anything below this line.
+% --------------------------------------------------------------
+ 
+\end{document}
